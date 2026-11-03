@@ -1,117 +1,48 @@
-# FastFlicker - YouTube Video Note & Flashcard Generator 📼🧠
+# FastFlicker
 
-Streamlit app that takes a YouTube URL, checks whether the video appears educational, and generates study notes and flashcards using the Groq API (LLaMA 3.1 model).
+Turn an educational YouTube video into study notes and revision flashcards in a few seconds.
 
-## Features
+## What it does
 
-- Paste a YouTube URL in the sidebar
-- Validates the video against an educational keyword filter
-- Fetches YouTube metadata (title, description, channel)
-- Generates notes and flashcards only for educational videos
-- Displays the embedded video and generated content in Streamlit
+1. You paste a YouTube link.
+2. FastFlicker pulls the video's title, description and channel, and checks whether it looks educational. Music videos, vlogs and broken links are rejected here, before any tokens are spent.
+3. For educational videos, it asks a Groq-hosted Llama model for structured notes and flashcards.
+4. The video and the generated material are shown side by side.
 
-## Requirements
+You can switch between `llama-3.1-8b-instant` (fast, default) and `llama-3.3-70b-versatile` (higher quality) from the sidebar.
 
-- Python 3.10+
-- `pip` installed
-- A valid `GROQ_API_KEY`
+## Stack
 
-## Live Demo
+Python · Streamlit · Groq API · YouTube metadata · Streamlit Cloud
 
-🚀 **Try the app online:** [FastFlicker on Streamlit Cloud](https://share.streamlit.io/Rashi18032006/Minor_Project/main/app.py)
+## Run locally
 
-## Setup (Local Development)
-
-Open a terminal in the `Minor_Project` folder:
-
-```powershell
-cd "c:\Users\lenovo\Minor_Project"
-```
-
-Create and activate the virtual environment:
-
-```powershell
+```bash
+git clone https://github.com/Rashi18032006/FastFlicker.git
+cd FastFlicker
 python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-Install the dependencies:
-
-```powershell
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Configure Groq
-
-Create a `.env` file in the project root with your API key:
+Create a `.env` file (it is git-ignored):
 
 ```env
-GROQ_API_KEY=your_api_key_here
+GROQ_API_KEY=your_key_here
 GROQ_API_URL=https://api.groq.com/openai/v1
-```
-
-Optional: set a specific model override if you want to use a different Groq model.
-
-```env
 GROQ_MODEL=llama-3.1-8b-instant
 ```
 
-## Run the app
+Then:
 
-Start Streamlit:
-
-```powershell
+```bash
 streamlit run app.py
 ```
 
-Then open the local URL shown in the terminal, usually:
+## Deploying on Streamlit Cloud
 
-```text
-http://localhost:8501
-```
+Create a new app from this repo with `app.py` as the main file, and add `GROQ_API_KEY` under **App settings → Secrets**. The app reads `st.secrets` first and falls back to `.env` locally.
 
-## Usage
+## License
 
-- Enter a YouTube video URL in the sidebar.
-- The app will verify whether the video appears educational.
-- If the video is educational, it will generate notes and flashcards.
-- If the video is not educational, the app will return an error and will not generate content.
-
-## Notes
-
-- The project uses the Groq `/chat/completions` endpoint.
-- Default model is `llama-3.1-8b-instant`.
-- Non-educational videos are blocked to prevent unwanted content generation.
-- If you encounter API failures, verify your `GROQ_API_KEY` and `GROQ_API_URL` settings.
-
-## Deployment
-
-### Deploy to Streamlit Cloud
-
-1. Push your code to GitHub
-2. Go to [share.streamlit.io](https://share.streamlit.io)
-3. Click "New app" and select:
-   - Repository: `Rashi18032006/Minor_Project`
-   - Branch: `main`
-   - Main file: `app.py`
-4. Add your secrets in the app settings:
-   - `GROQ_API_KEY`: Your Groq API key
-   - `GROQ_API_URL`: `https://api.groq.com/openai/v1`
-   - `GROQ_MODEL`: `llama-3.1-8b-instant`
-5. Click Deploy!
-
-## Troubleshooting
-
-If the virtual environment fails to activate in PowerShell, run:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-```
-
-If dependencies are missing, ensure the virtual environment is active before running `streamlit run app.py`.
-
-### App Not Showing Latest Changes?
-
-- Hard refresh your browser: `Ctrl+Shift+R` (Windows) or `Cmd+Shift+R` (Mac)
-- Check Streamlit Cloud deployment logs for errors
-- Ensure your code is pushed to the main branch
+GPL-3.0
